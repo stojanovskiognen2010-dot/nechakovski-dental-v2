@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="mk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Д-р Нечаковски · Стоматолошка ординација во Битола</title>
+<meta name="description" content="Семејна стоматолошка ординација во Битола: протетика, естетика, ласер и дигитална дијагностика. Закажете преглед онлајн.">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Д-р Нечаковски · Стоматолошка ординација во Битола">
+<meta property="og:description" content="Протетика, естетика, ласерска терапија. Закажете преглед онлајн.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+<link rel="preload" as="image" href="assets/hero.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Commissioner:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<main>
+
+  <!-- Hero -->
+  <section class="hero">
+    <img class="hero-img" src="assets/hero.jpg" alt="" width="1600" height="1008" fetchpriority="high">
+    <div class="hero-veil"></div>
+    <div class="wrap hero-inner">
+      <p class="eyebrow" data-i18n="heroEyebrow">Битола · од 1976</p>
+      <h1 data-i18n-pair="heroTitle|heroTitleEm">Уметноста на <em>совршената насмевка.</em></h1>
+      <p class="hero-text" data-i18n="heroText">Семејна стоматолошка ординација со традиција од над три децении — протетика, естетика, ласерска терапија и дигитална дијагностика на едно место.</p>
+      <div class="hero-cta">
+        <a class="btn btn-gold" href="booking.html"><span data-i18n="ctaBook">Закажете преглед</span></a>
+        <a class="btn btn-ghost" id="hero-call" href="tel:+38947254528"></a>
+      </div>
+      <dl class="stats" id="stats"></dl>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="wrap section services">
+    <p class="eyebrow" data-i18n="servicesEyebrow">Услуги</p>
+    <h2 data-i18n-pair="servicesTitle|servicesTitleEm">Целосна грижа за <em>вашата насмевка.</em></h2>
+    <p class="lede" data-i18n="servicesText">Од превентива до комплексни протетски изработки — со најсовремена опрема.</p>
+    <div class="card-grid" id="service-cards"></div>
+  </section>
+
+  <!-- Why us -->
+  <section class="split">
+    <div class="wrap split-inner">
+      <img src="assets/smile.jpg" alt="" loading="lazy" width="1008" height="1200">
+      <div>
+        <p class="eyebrow" data-i18n="whyTitle">Зошто нас</p>
+        <h2 data-i18n-pair="aboutTitle|aboutTitleEm">Традиција што се <em>продолжува.</em></h2>
+        <div class="why" id="why-list"></div>
+        <a class="text-link" href="about.html" id="about-link"></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking CTA -->
+  <section class="cta-band">
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="bookInfo">Само за преглед · 30 минути</p>
+      <h2 data-i18n="bookTitle">Закажете преглед</h2>
+      <p class="sub" data-i18n="bookText">Преглед од 30 минути. Изберете ден и час — ќе ве контактираме за потврда.</p>
+      <a class="btn btn-gold" href="booking.html"><span data-i18n="ctaBook">Закажете преглед</span></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/i18n.js"></script>
+<script>
+window.PAGE_RENDER = function (t) {
+  var S = window.SITE, el = S.el, C = window.CLINIC;
+
+  /* Call button in the hero */
+  var call = document.getElementById("hero-call");
+  call.href = S.tel(C.phones[0]);
+  call.innerHTML = S.icons.phone;
+  call.appendChild(document.createTextNode(" " + C.phones[0]));
+
+  /* Stats */
+  var stats = [
+    { n: "50", suffix: "+", l: t.stats.years },
+    { n: "4", suffix: "", l: t.stats.doctors },
+    { n: "1976", suffix: "", l: t.stats.founded },
+    { n: "3", suffix: "", l: t.stats.laser }
+  ];
+  var dl = document.getElementById("stats");
+  dl.replaceChildren.apply(dl, stats.map(function (s) {
+    var box = el("div");
+    box.appendChild(el("dt", null, s.n + s.suffix));
+    box.appendChild(el("dd", null, s.l));
+    return box;
+  }));
+
+  /* Service cards */
+  var grid = document.getElementById("service-cards");
+  grid.replaceChildren.apply(grid, t.categories.map(function (cat, i) {
+    var a = el("a", "card");
+    a.href = "services.html";
+    a.appendChild(el("span", "card-num", "0" + (i + 1)));
+    a.appendChild(el("h3", null, cat.name));
+    a.appendChild(el("p", null, cat.items.slice(0, 2).join(" · ")));
+    var arrow = el("span", "arrow");
+    arrow.innerHTML = S.icons.arrow16;
+    a.appendChild(arrow);
+    return a;
+  }));
+
+  /* Why us */
+  var why = document.getElementById("why-list");
+  why.replaceChildren.apply(why, t.why.map(function (w) {
+    var box = el("div", "why-item");
+    box.appendChild(el("h3", null, w.t));
+    box.appendChild(el("p", null, w.d));
+    return box;
+  }));
+
+  /* About link */
+  var link = document.getElementById("about-link");
+  link.textContent = t.nav.about + " ";
+  var arrow = el("span");
+  arrow.innerHTML = window.SITE.icons.arrow;
+  link.appendChild(arrow);
+};
+</script>
+<script src="assets/site.js"></script>
+</body>
+</html>

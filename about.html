@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="mk" data-title-key="aboutEyebrow">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>За нас · Стоматолошка ординација Д-р Нечаковски</title>
+<meta name="description" content="Семејна стоматолошка ординација во Битола: протетика, естетика, ласер и дигитална дијагностика. Закажете преглед онлајн.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Commissioner:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<main>
+
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="aboutEyebrow">За нас</p>
+      <h1 data-i18n="clinic">Стоматолошка ординација Д-р Нечаковски</h1>
+      <span class="gold-rule"></span>
+    </div>
+  </section>
+
+  <section class="wrap about-section">
+    <img class="about-photo" src="assets/team.jpg" alt="" loading="lazy" width="500" height="191"
+         data-i18n-attr="alt:clinic">
+    <p class="about-lede display" data-i18n="aboutText">Ординацијата ја основа д-р Кирил Нечаковски, специјалист по стоматолошка протетика. Денес ја води д-р Александар Нечаковски, со тим посветени доктори кои ја спојуваат традицијата со најсовремената стоматологија.</p>
+    <div class="team-grid" id="team"></div>
+    <p class="founder" data-i18n="founder">Основач: д-р Кирил Нечаковски, специјалист по стоматолошка протетика</p>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/i18n.js"></script>
+<script>
+window.PAGE_RENDER = function (t) {
+  var el = window.SITE.el;
+  var host = document.getElementById("team");
+  host.replaceChildren.apply(host, t.team.map(function (m) {
+    var card = el("div", "team-card");
+    card.appendChild(el("h3", null, m.name));
+    card.appendChild(el("p", null, m.role));
+    return card;
+  }));
+};
+</script>
+<script src="assets/site.js"></script>
+</body>
+</html>

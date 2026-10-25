@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="mk" data-title-key="bookTitle">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Закажете преглед · Стоматолошка ординација Д-р Нечаковски</title>
+<meta name="description" content="Онлајн закажување на преглед од 30 минути во стоматолошката ординација Д-р Нечаковски, Битола.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Commissioner:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<main>
+
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="bookEyebrow">Онлајн закажување</p>
+      <h1 data-i18n="bookTitle">Закажете преглед</h1>
+      <span class="gold-rule"></span>
+    </div>
+  </section>
+
+  <section class="wrap wrap-3xl booking-section">
+
+    <div class="booking-done" id="booking-done" hidden></div>
+
+    <form class="booking-form" id="booking-form" novalidate>
+      <p class="muted" data-i18n="bookText">Преглед од 30 минути. Изберете ден и час — ќе ве контактираме за потврда.</p>
+
+      <div>
+        <p class="eyebrow step-label"><span>1 · </span><span data-i18n="chooseDay">Изберете ден</span></p>
+        <div class="day-strip" id="day-strip"></div>
+      </div>
+
+      <div>
+        <p class="eyebrow step-label"><span>2 · </span><span data-i18n="chooseTime">Изберете час</span></p>
+        <div id="slot-box"></div>
+      </div>
+
+      <div class="fields">
+        <p class="eyebrow"><span>3 · </span><span data-i18n="name">Име и презиме</span><span> / </span><span data-i18n="phone">Телефон</span></p>
+
+        <label class="field">
+          <span><span data-i18n="name">Име и презиме</span> <span class="req">*</span></span>
+          <input id="f-name" type="text" maxlength="100" autocomplete="name">
+          <span class="err" id="err-name" hidden></span>
+        </label>
+
+        <label class="field">
+          <span><span data-i18n="phone">Телефон</span> <span class="req">*</span></span>
+          <input id="f-phone" type="tel" maxlength="100" autocomplete="tel">
+          <span class="err" id="err-phone" hidden></span>
+        </label>
+
+        <label class="field">
+          <span><span data-i18n="email">Е-пошта</span> <span class="opt">(<span data-i18n="optional">незадолжително</span>)</span></span>
+          <input id="f-email" type="email" maxlength="255" autocomplete="email">
+          <span class="err" id="err-email" hidden></span>
+        </label>
+      </div>
+
+      <button class="btn btn-primary submit" id="submit" type="submit" data-i18n="submit">Потврди термин</button>
+      <p class="fineprint" data-i18n="bookInfo">Само за преглед · 30 минути</p>
+    </form>
+
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/i18n.js"></script>
+<script src="assets/config.js"></script>
+<script src="assets/booking.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>
