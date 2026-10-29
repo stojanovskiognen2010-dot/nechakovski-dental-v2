@@ -63,8 +63,12 @@
 
     var brand = el("a", "brand");
     brand.href = "index.html";
-    brand.appendChild(el("span", "brand-name", "Д-р Нечаковски"));
-    brand.appendChild(el("span", "brand-sub", "Dental Practice"));
+    /* the practice's own mark, masked so it takes the colour around it */
+    brand.appendChild(el("span", "brand-mark"));
+    var brandText = el("span", "brand-text");
+    brandText.appendChild(el("span", "brand-name", "Д-р Нечаковски"));
+    brandText.appendChild(el("span", "brand-sub", "Стоматолошка ординација"));
+    brand.appendChild(brandText);
     bar.appendChild(brand);
 
     var nav = el("nav", "nav-desktop");
@@ -134,7 +138,10 @@
     var grid = el("div", "wrap footer-grid");
 
     var col1 = el("div");
-    col1.appendChild(el("p", "f-name", t.clinic));
+    var fBrand = el("div", "f-brand");
+    fBrand.appendChild(el("span", "brand-mark"));
+    fBrand.appendChild(el("p", "f-name", t.clinic));
+    col1.appendChild(fBrand);
     col1.appendChild(el("span", "gold-rule"));
     grid.appendChild(col1);
 

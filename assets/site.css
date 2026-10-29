@@ -26,6 +26,7 @@
 
   --font-display: "EB Garamond", "Cormorant Garamond", Georgia, serif;
   --font-sans: "Commissioner", "Manrope", system-ui, -apple-system, sans-serif;
+  --font-logo: Verdana, Geneva, "DejaVu Sans", sans-serif;   /* their wordmark */
 
   --wrap: 72rem;   /* max-w-6xl */
   --gutter: 1.25rem;
@@ -164,9 +165,20 @@ p { text-wrap: pretty; }
   height: var(--header-h);
 }
 
-.brand { line-height: 1.15; }
-.brand-name { display: block; font-family: var(--font-display); font-size: 1.3rem; letter-spacing: .015em; }
-.brand-sub { display: block; margin-top: .1rem; font-size: .6rem; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); }
+.brand { display: flex; align-items: center; gap: .6rem; line-height: 1.15; }
+.brand-text { display: block; }
+/* the mark is masked rather than inlined, so one cached file serves the dark
+   header and the gold footer and still follows currentColor */
+.brand-mark {
+  flex: none;
+  width: 1.1rem; height: 2.28rem;      /* the artwork is 306 : 635 */
+  background: currentColor;
+  -webkit-mask: url(logo.svg) center / contain no-repeat;
+  mask: url(logo.svg) center / contain no-repeat;
+}
+/* the practice sets its name in Verdana Bold — their wordmark, not ours */
+.brand-name { display: block; font-family: var(--font-logo); font-weight: 700; font-size: 1.05rem; letter-spacing: -.005em; }
+.brand-sub { display: block; margin-top: .15rem; font-size: .55rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); }
 
 .nav-desktop { display: none; align-items: center; gap: 1.75rem; font-size: .9rem; }
 .nav-desktop a { color: color-mix(in oklab, var(--ink-foreground) 80%, transparent); transition: color .2s; }
@@ -558,8 +570,10 @@ p { text-wrap: pretty; }
 
 .site-footer { background: var(--ink); color: var(--ink-foreground); }
 .footer-grid { display: grid; gap: 2.5rem; padding-block: 3.5rem; }
-.footer-grid .f-name { font-family: var(--font-display); font-size: 1.5rem; }
-.footer-grid .f-name + .gold-rule { margin-top: 1rem; }
+.f-brand { display: flex; align-items: center; gap: .75rem; color: var(--gold-soft); }
+.f-brand .brand-mark { width: 1.45rem; height: 3rem; }
+.footer-grid .f-name { font-family: var(--font-logo); font-weight: 700; font-size: 1rem; line-height: 1.35; letter-spacing: -.005em; color: var(--ink-foreground); }
+.f-brand + .gold-rule { margin-top: 1rem; }
 .f-col { font-size: .875rem; color: color-mix(in oklab, var(--ink-foreground) 75%, transparent); }
 .f-col > * + * { margin-top: .25rem; }
 .f-col a { display: block; transition: color .2s; }
