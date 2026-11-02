@@ -183,7 +183,7 @@ p { text-wrap: pretty; }
 .nav-desktop { display: none; align-items: center; gap: 1.75rem; font-size: .9rem; }
 .nav-desktop a { color: color-mix(in oklab, var(--ink-foreground) 80%, transparent); transition: color .2s; }
 .nav-desktop a:hover { color: var(--gold); }
-.nav-desktop a[aria-current="page"] { color: var(--gold); }
+.nav-desktop a[aria-current] { color: var(--gold); }
 
 .nav-book {
   border: 1px solid var(--gold);
@@ -417,23 +417,27 @@ p { text-wrap: pretty; }
 .service-list {
   display: grid;
   gap: 3rem;
-  padding-block: 4rem;
+  margin-top: 3rem;
 }
 .service-block .card-num { font-size: 1rem; }
-.service-block h2 { margin-top: .25rem; font-size: 1.875rem; }
+.service-block h3 { margin-top: .25rem; font-size: 1.875rem; }
 .service-block ul { margin-top: 1.25rem; border-top: 1px solid var(--border); }
 .service-block li { padding-block: .75rem; font-size: .875rem; border-bottom: 1px solid var(--border); }
 .center-cta { padding-bottom: 5rem; text-align: center; }
 
 @media (min-width: 48rem) {
-  .service-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem; padding-block: 6rem; }
+  .service-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem 4rem; }
 }
 
 /* --------------------------------------------------------------------------
    About page
    -------------------------------------------------------------------------- */
 
-.about-section { padding-block: 4rem; }
+/* the clinic's full name broke mid-word on a phone, splitting "Д-р" across
+   two lines — a smaller step and a no-break rule keep it whole */
+.clinic-title { margin-top: .75rem; font-size: clamp(1.6rem, 5.2vw, 3rem); }
+.about-section .gold-rule { margin-top: 1.25rem; }
+.about-section .about-photo { margin-top: 2.5rem; }
 /* both used to stop short of the container and leave a bare strip down the
    right-hand side — the photo now spans it, and the paragraph runs wider */
 .about-photo { width: 100%; object-fit: cover; }
@@ -453,7 +457,6 @@ p { text-wrap: pretty; }
 
 @media (min-width: 40rem) { .team-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 48rem) {
-  .about-section { padding-block: 6rem; }
   .about-lede { font-size: 1.875rem; }
 }
 
@@ -461,7 +464,7 @@ p { text-wrap: pretty; }
    Contact page
    -------------------------------------------------------------------------- */
 
-.contact-grid { display: grid; gap: 3rem; padding-block: 4rem; }
+.contact-grid { display: grid; gap: 3rem; margin-top: 2.5rem; }
 .contact-list { display: grid; gap: 2rem; align-content: start; justify-items: start; }
 .contact-list > .contact-row { justify-self: stretch; }
 .contact-row { display: flex; gap: 1rem; }
@@ -472,7 +475,7 @@ p { text-wrap: pretty; }
 .map { width: 100%; height: 24rem; border: 1px solid var(--border); }
 
 @media (min-width: 48rem) {
-  .contact-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-block: 6rem; }
+  .contact-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .map { height: 100%; min-height: 28rem; }
 }
 

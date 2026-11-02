@@ -18,15 +18,33 @@
     check40: '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>'
   };
 
+  /* The site is one page you scroll — the practice asked for a feed rather
+     than a menu to click through on a phone. These are sections of index.html,
+     so from booking.html they need the filename in front of the hash. */
   var NAV = [
-    { href: "index.html", key: "home" },
-    { href: "services.html", key: "services" },
-    { href: "about.html", key: "about" },
-    { href: "contact.html", key: "contact" }
+    { hash: "pocetna", key: "home" },
+    { hash: "uslugi", key: "services" },
+    { hash: "za-nas", key: "about" },
+    { hash: "kontakt", key: "contact" }
   ];
 
   function tel(number) {
     return "tel:+389" + String(number).replace(/\s/g, "").replace(/^0/, "");
+  }
+
+  function onIndex() {
+    return currentPage === "index.html" || currentPage === "";
+  }
+
+  /* booking.html is still its own page, so links out of it need the filename */
+  function navHref(hash) {
+    return (onIndex() ? "" : "index.html") + "#" + hash;
+  }
+
+  function closeMenu(panel, toggle) {
+    panel.classList.remove("open");
+    toggle.innerHTML = ICONS.menu;
+    toggle.setAttribute("aria-expanded", "false");
   }
 
   function pick(dict, path) {
@@ -62,11 +80,11 @@
     var bar = el("div", "wrap header-bar");
 
     var brand = el("a", "brand");
-    brand.href = "index.html";
+    brand.href = navHref("pocetna");
     /* the practice's own mark, masked so it takes the colour around it */
     brand.appendChild(el("span", "brand-mark"));
     var brandText = el("span", "brand-text");
-    brandText.appendChild(el("span", "brand-name", "Д-р Нечаковски"));
+    brandText.appendChild(el("span", "brand-name", "Д-⁠р Нечаковски"));
     brandText.appendChild(el("span", "brand-sub", "Стоматолошка ординација"));
     brand.appendChild(brandText);
     bar.appendChild(brand);
@@ -74,8 +92,8 @@
     var nav = el("nav", "nav-desktop");
     NAV.forEach(function (item) {
       var a = el("a", null, t.nav[item.key]);
-      a.href = item.href;
-      if (item.href === currentPage) a.setAttribute("aria-current", "page");
+      a.href = navHref(item.hash);
+      a.dataset.section = item.hash;
       nav.appendChild(a);
     });
     nav.appendChild(buildLangSwitch());
@@ -99,7 +117,19 @@
     var panel = el("nav", "nav-mobile");
     NAV.forEach(function (item) {
       var a = el("a", "m-link", t.nav[item.key]);
-      a.href = item.href;
+      a.href = navHref(item.hash);
+      a.dataset.section = item.hash;
+      /* An in-page jump does not reload, so the panel has to close itself —
+         but hiding the panel in the same handler cancels the browser's own
+         scroll to the anchor, so do the scrolling here instead. */
+      a.addEventListener("click", function (ev) {
+        var target = onIndex() ? document.getElementById(item.hash) : null;
+        closeMenu(panel, toggle);
+        if (!target) return;
+        ev.preventDefault();
+        history.replaceState(null, "", "#" + item.hash);
+        target.scrollIntoView();           // honours scroll-padding-top
+      });
       panel.appendChild(a);
     });
     var mbook = el("a", "m-book", t.nav.book);
@@ -205,7 +235,9 @@
       var part = pick(t, titleKey);
       if (part) title = part + " · " + t.clinic;
     }
-    document.title = title;
+    /* the word joiner that keeps "Д-р" whole on screen would show as a gap in
+       the browser tab, so it never reaches the title */
+    document.title = title.replace(/⁠/g, "");
     var desc = document.querySelector('meta[name="description"]');
     if (desc) desc.setAttribute("content", t.metaDesc);
   }
@@ -225,6 +257,39 @@
     applyMeta(t);
 
     if (typeof window.PAGE_RENDER === "function") window.PAGE_RENDER(t, lang);
+
+    watchSections();
+  }
+
+  /* Marks the nav item for whichever section is in the middle of the screen.
+     The header is rebuilt on every language switch, so the old observer is
+     thrown away first. */
+  var sectionIO = null;
+  function watchSections() {
+    if (sectionIO) { sectionIO.disconnect(); sectionIO = null; }
+    if (!onIndex() || typeof IntersectionObserver !== "function") return;
+
+    var links = {};
+    document.querySelectorAll("[data-section]").forEach(function (a) {
+      (links[a.dataset.section] = links[a.dataset.section] || []).push(a);
+    });
+
+    sectionIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        Object.keys(links).forEach(function (id) {
+          links[id].forEach(function (a) {
+            if (id === entry.target.id) a.setAttribute("aria-current", "true");
+            else a.removeAttribute("aria-current");
+          });
+        });
+      });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+
+    NAV.forEach(function (item) {
+      var section = document.getElementById(item.hash);
+      if (section) sectionIO.observe(section);
+    });
   }
 
   function setLang(code) {

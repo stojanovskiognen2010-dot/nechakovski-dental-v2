@@ -1,57 +1,14 @@
 <!doctype html>
-<html lang="mk" data-title-key="allServices">
+<html lang="mk">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Сите услуги · Стоматолошка ординација Д-р Нечаковски</title>
-<meta name="description" content="Семејна стоматолошка ординација во Битола: протетика, естетика, ласер и дигитална дијагностика. Закажете преглед онлајн.">
+<title>Сите услуги</title>
 <meta name="robots" content="noindex, nofollow">
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Commissioner:wght@300;400;500;600&display=swap">
-<link rel="stylesheet" href="assets/site.css">
+<!-- The site is one scrolling page now. This stub only exists so links that
+     were shared before the change still land on the right section. -->
+<link rel="canonical" href="index.html#uslugi">
+<meta http-equiv="refresh" content="0; url=index.html#uslugi">
+<script>location.replace("index.html#uslugi");</script>
 </head>
-<body>
-
-<div id="site-header"></div>
-
-<main>
-
-  <section class="page-hero">
-    <div class="wrap">
-      <p class="eyebrow" data-i18n="servicesEyebrow">Услуги</p>
-      <h1 data-i18n="allServices">Сите услуги</h1>
-      <span class="gold-rule"></span>
-    </div>
-  </section>
-
-  <section class="wrap service-list" id="service-list"></section>
-
-  <div class="center-cta">
-    <a class="btn btn-primary" href="booking.html"><span data-i18n="ctaBook">Закажете преглед</span></a>
-  </div>
-
-</main>
-
-<div id="site-footer"></div>
-
-<script src="assets/i18n.js"></script>
-<script>
-window.PAGE_RENDER = function (t) {
-  var el = window.SITE.el;
-  var host = document.getElementById("service-list");
-  host.replaceChildren.apply(host, t.categories.map(function (cat, i) {
-    var block = el("div", "service-block");
-    block.appendChild(el("span", "card-num", "0" + (i + 1)));
-    block.appendChild(el("h2", null, cat.name));
-    var ul = el("ul");
-    cat.items.forEach(function (item) { ul.appendChild(el("li", null, item)); });
-    block.appendChild(ul);
-    return block;
-  }));
-};
-</script>
-<script src="assets/site.js"></script>
-</body>
+<body><p><a href="index.html#uslugi">Сите услуги</a></p></body>
 </html>

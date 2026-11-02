@@ -1,84 +1,14 @@
 <!doctype html>
-<html lang="mk" data-title-key="contactTitle">
+<html lang="mk">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Посетете не · Стоматолошка ординација Д-р Нечаковски</title>
-<meta name="description" content="Адреса, телефони и работно време на стоматолошката ординација Д-р Нечаковски во Битола.">
+<title>Контакт</title>
 <meta name="robots" content="noindex, nofollow">
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Commissioner:wght@300;400;500;600&display=swap">
-<link rel="stylesheet" href="assets/site.css">
+<!-- The site is one scrolling page now. This stub only exists so links that
+     were shared before the change still land on the right section. -->
+<link rel="canonical" href="index.html#kontakt">
+<meta http-equiv="refresh" content="0; url=index.html#kontakt">
+<script>location.replace("index.html#kontakt");</script>
 </head>
-<body>
-
-<div id="site-header"></div>
-
-<main>
-
-  <section class="page-hero">
-    <div class="wrap">
-      <p class="eyebrow" data-i18n="contactEyebrow">Контакт</p>
-      <h1 data-i18n="contactTitle">Посетете не</h1>
-      <span class="gold-rule"></span>
-    </div>
-  </section>
-
-  <section class="wrap contact-grid">
-    <div class="contact-list" id="contact-list"></div>
-    <iframe class="map" id="map" title="Map" loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"></iframe>
-  </section>
-
-</main>
-
-<div id="site-footer"></div>
-
-<script src="assets/i18n.js"></script>
-<script>
-window.PAGE_RENDER = function (t) {
-  var S = window.SITE, el = S.el, C = window.CLINIC;
-
-  function row(icon, label, body) {
-    var r = el("div", "contact-row");
-    var ico = el("span");
-    ico.innerHTML = icon;
-    r.appendChild(ico);
-    var box = el("div");
-    box.appendChild(el("p", "eyebrow", label));
-    body.forEach(function (n) { box.appendChild(n); });
-    r.appendChild(box);
-    return r;
-  }
-
-  function link(href, text) {
-    var a = el("a", null, text);
-    a.href = href;
-    return a;
-  }
-
-  var rows = [
-    row(S.icons.pin, t.address, [el("p", "val", C.address)]),
-    row(S.icons.phone18, t.phone, C.phones.map(function (p) { return link(S.tel(p), p); })),
-    row(S.icons.mail, t.email, [link("mailto:" + C.email, C.email)]),
-    row(S.icons.clock, t.hours, [el("p", "val", t.hoursText), el("p", "muted", t.closedWeekend)])
-  ];
-
-  var directions = el("a", "btn btn-primary", t.directions);
-  directions.href = C.mapsUrl;
-  directions.target = "_blank";
-  directions.rel = "noreferrer";
-  rows.push(directions);
-
-  var host = document.getElementById("contact-list");
-  host.replaceChildren.apply(host, rows);
-
-  var map = document.getElementById("map");
-  if (map.getAttribute("src") !== C.embedUrl) map.src = C.embedUrl;
-};
-</script>
-<script src="assets/site.js"></script>
-</body>
+<body><p><a href="index.html#kontakt">Контакт</a></p></body>
 </html>

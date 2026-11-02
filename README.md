@@ -8,15 +8,30 @@ the folder.
 node "C:/Users/user/Desktop/.claude/static-serve.mjs" "C:/Users/user/OneDrive/Desktop/necako" 5300
 ```
 
-## Pages
+## One page you scroll
 
-| File | Page |
+The practice asked for a feed rather than a menu to click through — clicking
+around is awkward on a phone. So everything that used to be a separate page is
+now a section of `index.html`, and the nav scrolls to it:
+
+| Section | id |
 | --- | --- |
-| `index.html` | Home — hero, stats, services, why us, booking band |
-| `services.html` | All six service categories |
-| `about.html` | Team photo, doctors, founder |
-| `contact.html` | Address, phones, email, hours, map |
-| `booking.html` | Day + time picker and appointment form |
+| Hero | `#pocetna` |
+| All six service categories, in full | `#uslugi` |
+| Why us, then the team and the founder | `#za-nas` |
+| Address, phones, email, hours, map | `#kontakt` |
+
+`booking.html` is still a page of its own — it is a form to work through, not
+something to scroll past — and its nav links point back at `index.html#...`.
+
+`services.html`, `about.html` and `contact.html` are two-line stubs that
+redirect to the matching section, so links shared before the change still
+land in the right place.
+
+The nav item for whatever section is on screen is marked with `aria-current`
+by an `IntersectionObserver` in `site.js`. Tapping a link in the mobile menu
+scrolls explicitly rather than letting the browser follow the anchor: hiding
+the menu panel in the same handler cancels the browser's own jump.
 
 ## Languages
 
@@ -36,6 +51,12 @@ In the markup:
 
 Lists (services, team, stats, days) are rendered from the dictionary by each
 page's `PAGE_RENDER` function.
+
+Macedonian copy carries a **word joiner (U+2060) inside "Д-р"**. Without it the
+line can break after the hyphen and the name splits as "Д-" / "р", which the
+practice flagged. The joiner is invisible and needs no glyph, unlike a
+non-breaking hyphen. It is stripped out of `document.title`, where it would
+show as a gap in the browser tab.
 
 ## Typography
 

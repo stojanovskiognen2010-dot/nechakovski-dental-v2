@@ -24,8 +24,8 @@
 <main>
 
   <!-- Hero -->
-  <section class="hero">
-    <img class="hero-img" src="assets/hero.jpg" alt="" width="1600" height="1008" fetchpriority="high">
+  <section class="hero" id="pocetna">
+    <img class="hero-img" src="assets/hero.jpg" alt="" width="1600" height="1006" fetchpriority="high">
     <div class="hero-veil"></div>
     <div class="wrap hero-inner">
       <p class="eyebrow" data-i18n="heroEyebrow">Битола · од 1993</p>
@@ -39,12 +39,12 @@
     </div>
   </section>
 
-  <!-- Services -->
-  <section class="wrap section services">
+  <!-- Services: every category, in full -->
+  <section class="wrap section services" id="uslugi">
     <p class="eyebrow" data-i18n="servicesEyebrow">Услуги</p>
     <h2 data-i18n-pair="servicesTitle|servicesTitleEm">Целосна грижа за <em>вашата насмевка.</em></h2>
     <p class="lede" data-i18n="servicesText">Од превентива до комплексни протетски изработки — со најсовремена опрема.</p>
-    <div class="card-grid" id="service-cards"></div>
+    <div class="service-list" id="service-list"></div>
   </section>
 
   <!-- Why us -->
@@ -55,8 +55,30 @@
         <p class="eyebrow" data-i18n="whyTitle">Зошто нас</p>
         <h2 data-i18n-pair="aboutTitle|aboutTitleEm">Традиција што се <em>продолжува.</em></h2>
         <div class="why" id="why-list"></div>
-        <a class="text-link" href="about.html" id="about-link"></a>
       </div>
+    </div>
+  </section>
+
+  <!-- About and the team -->
+  <section class="wrap section about-section" id="za-nas">
+    <p class="eyebrow" data-i18n="aboutEyebrow">За нас</p>
+    <h2 class="clinic-title" data-i18n="clinic">Стоматолошка ординација Д-⁠р Нечаковски</h2>
+    <span class="gold-rule"></span>
+    <img class="about-photo" src="assets/team.jpg" alt="" loading="lazy" width="1600" height="612"
+         data-i18n-attr="alt:clinic">
+    <p class="about-lede display" data-i18n="aboutText">Ординацијата ја основа д-р Кирил Нечаковски, специјалист по стоматолошка протетика. Денес ја води д-р Александар Нечаковски, со тим посветени доктори кои ја спојуваат традицијата со најсовремената стоматологија.</p>
+    <div class="team-grid" id="team"></div>
+    <p class="founder" data-i18n="founder">Основач: д-р Кирил Нечаковски, специјалист по стоматолошка протетика</p>
+  </section>
+
+  <!-- Contact -->
+  <section class="wrap section" id="kontakt">
+    <p class="eyebrow" data-i18n="contactEyebrow">Контакт</p>
+    <h2 data-i18n="contactTitle">Посетете не</h2>
+    <div class="contact-grid">
+      <div class="contact-list" id="contact-list"></div>
+      <iframe class="map" id="map" title="Map" loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
   </section>
 
@@ -100,18 +122,17 @@ window.PAGE_RENDER = function (t) {
     return box;
   }));
 
-  /* Service cards */
-  var grid = document.getElementById("service-cards");
-  grid.replaceChildren.apply(grid, t.categories.map(function (cat, i) {
-    var a = el("a", "card");
-    a.href = "services.html";
-    a.appendChild(el("span", "card-num", "0" + (i + 1)));
-    a.appendChild(el("h3", null, cat.name));
-    a.appendChild(el("p", null, cat.items.slice(0, 2).join(" · ")));
-    var arrow = el("span", "arrow");
-    arrow.innerHTML = S.icons.arrow16;
-    a.appendChild(arrow);
-    return a;
+  /* Every service, in full — the page is one scroll now, so there is no
+     separate services page to link out to */
+  var list = document.getElementById("service-list");
+  list.replaceChildren.apply(list, t.categories.map(function (cat, i) {
+    var block = el("div", "service-block");
+    block.appendChild(el("span", "card-num", "0" + (i + 1)));
+    block.appendChild(el("h3", null, cat.name));
+    var ul = el("ul");
+    cat.items.forEach(function (item) { ul.appendChild(el("li", null, item)); });
+    block.appendChild(ul);
+    return block;
   }));
 
   /* Why us */
@@ -123,12 +144,50 @@ window.PAGE_RENDER = function (t) {
     return box;
   }));
 
-  /* About link */
-  var link = document.getElementById("about-link");
-  link.textContent = t.nav.about + " ";
-  var arrow = el("span");
-  arrow.innerHTML = window.SITE.icons.arrow;
-  link.appendChild(arrow);
+  /* Team */
+  var team = document.getElementById("team");
+  team.replaceChildren.apply(team, t.team.map(function (m) {
+    var card = el("div", "team-card");
+    card.appendChild(el("h3", null, m.name));
+    card.appendChild(el("p", null, m.role));
+    return card;
+  }));
+
+  /* Contact */
+  function row(icon, label, body) {
+    var r = el("div", "contact-row");
+    var ico = el("span");
+    ico.innerHTML = icon;
+    r.appendChild(ico);
+    var box = el("div");
+    box.appendChild(el("p", "eyebrow", label));
+    body.forEach(function (n) { box.appendChild(n); });
+    r.appendChild(box);
+    return r;
+  }
+  function link(href, text) {
+    var a = el("a", null, text);
+    a.href = href;
+    return a;
+  }
+
+  var rows = [
+    row(S.icons.pin, t.address, [el("p", "val", C.address)]),
+    row(S.icons.phone18, t.phone, C.phones.map(function (p) { return link(S.tel(p), p); })),
+    row(S.icons.mail, t.email, [link("mailto:" + C.email, C.email)]),
+    row(S.icons.clock, t.hours, [el("p", "val", t.hoursText), el("p", "muted", t.closedWeekend)])
+  ];
+  var directions = el("a", "btn btn-primary", t.directions);
+  directions.href = C.mapsUrl;
+  directions.target = "_blank";
+  directions.rel = "noreferrer";
+  rows.push(directions);
+
+  var host = document.getElementById("contact-list");
+  host.replaceChildren.apply(host, rows);
+
+  var map = document.getElementById("map");
+  if (map.getAttribute("src") !== C.embedUrl) map.src = C.embedUrl;
 };
 </script>
 <script src="assets/site.js"></script>
