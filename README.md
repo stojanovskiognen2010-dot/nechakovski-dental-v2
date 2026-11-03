@@ -60,6 +60,51 @@ you are typing in them are no help to anyone.
 A gold hairline across the very top of the screen tracks how far down the
 page you are.
 
+## Motion the scroll drives
+
+`feed.js` writes a `--p` of 0 to 1 onto each moving part, saying how far
+through its own travel it is, and the stylesheet does the rest in `calc()`.
+Nothing here has a duration: scroll back up and it all runs backwards,
+because `--p` is only ever a statement about where you are on the page.
+
+**The hero pins.** `.hero-stage` is 150svh tall and `.hero` inside it is
+sticky, so the hero holds still while `.stack` — everything below it —
+scrolls up over it on its own plane, with a rounded top edge and a shadow.
+Across that travel the photograph settles out of its own zoom (1.18 → 1),
+the veil over it deepens, and the words rise and fade, clear by 80% of the
+way through, just as the sheet arrives.
+
+The hero sticks at `top: var(--header-h)` and is short by exactly that much,
+so the frame it occupies is identical before and after it pins. Sticking at
+0 instead left it hanging a header's height below the fold at rest, which
+pushed the bottom row of figures off the screen.
+
+**It only pins when the hero fits.** `decidePin()` measures the hero's
+content against the screen and adds `.pin-hero` to `<html>` only if there is
+room — a 375x667 phone scrolls its hero normally and keeps everything else.
+The measurement subtracts the padding that disappears once pinned, or it
+would refuse on screens where the content fits perfectly well.
+
+**The two photographs travel inside their frames.** `.frame` clips, and the
+image inside is scaled 1.14 and moved on `--p`, so it drifts as it crosses
+the screen. The `height: 100%` on `.frame img` is load-bearing: both images
+carry `width`/`height` attributes, and those outrank a CSS `aspect-ratio`
+unless a height is given.
+
+All of it is off under `prefers-reduced-motion` — no pin, no travel, no
+reveals — and none of it runs without JavaScript, where the `var(--p, …)`
+fallbacks leave everything in its resting state.
+
+### Measuring it
+
+Don't use headless Chrome for any of this. CSS transitions don't advance
+under `--virtual-time-budget`, so scrolled captures come out blank, and its
+layout viewport is wider than `--window-size`, so stills look clipped. Use
+the browser pane: `resize_window`, scroll with `behavior: "instant"`, wait a
+beat and read the computed values. Headless is good for exactly one thing
+here — `--force-prefers-reduced-motion --dump-dom` to confirm `<html>` comes
+back without `pin-hero` or `js-reveal`.
+
 ## Devices
 
 The whole thing is one column that has to hold from a 320px phone to a 4K

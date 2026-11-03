@@ -23,21 +23,27 @@
 
 <main>
 
-  <!-- Hero -->
-  <section class="hero" id="pocetna">
-    <img class="hero-img" src="assets/hero.jpg" alt="" width="1600" height="1006" fetchpriority="high">
-    <div class="hero-veil"></div>
-    <div class="wrap hero-inner">
-      <p class="eyebrow" data-i18n="heroEyebrow">Битола · од 1993</p>
-      <h1 data-i18n-pair="heroTitle|heroTitleEm">Уметноста на <em>совршената насмевка.</em></h1>
-      <p class="hero-text" data-i18n="heroText">Семејна стоматолошка ординација со традиција од над три децении — протетика, естетика, ласерска терапија и дигитална дијагностика на едно место.</p>
-      <div class="hero-cta">
-        <a class="btn btn-gold" href="booking.html"><span data-i18n="ctaBook">Закажете преглед</span></a>
-        <a class="btn btn-ghost" id="hero-call" href="tel:+38947254528"></a>
+  <!-- Hero. The stage is taller than the screen; the hero inside it is
+       sticky, so it holds still while the stack below scrolls up over it. -->
+  <section class="hero-stage" id="pocetna">
+    <div class="hero">
+      <img class="hero-img" src="assets/hero.jpg" alt="" width="1600" height="1006" fetchpriority="high">
+      <div class="hero-veil"></div>
+      <div class="wrap hero-inner">
+        <p class="eyebrow" data-i18n="heroEyebrow">Битола · од 1993</p>
+        <h1 data-i18n-pair="heroTitle|heroTitleEm">Уметноста на <em>совршената насмевка.</em></h1>
+        <p class="hero-text" data-i18n="heroText">Семејна стоматолошка ординација со традиција од над три децении — протетика, естетика, ласерска терапија и дигитална дијагностика на едно место.</p>
+        <div class="hero-cta">
+          <a class="btn btn-gold" href="booking.html"><span data-i18n="ctaBook">Закажете преглед</span></a>
+          <a class="btn btn-ghost" id="hero-call" href="tel:+38947254528"></a>
+        </div>
+        <dl class="stats" id="stats"></dl>
       </div>
-      <dl class="stats" id="stats"></dl>
     </div>
   </section>
+
+  <!-- Everything from here rides over the hero on its own plane. -->
+  <div class="stack">
 
   <!-- Services: every category, in full -->
   <section class="wrap section services" id="uslugi">
@@ -50,8 +56,10 @@
   <!-- Why us -->
   <section class="split">
     <div class="wrap split-inner">
-      <img src="assets/smile.jpg" alt="" loading="lazy" width="1008" height="1200">
-      <div>
+      <div class="frame frame--portrait">
+        <img src="assets/smile.jpg" alt="" loading="lazy" width="1008" height="1200">
+      </div>
+      <div class="split-copy">
         <p class="eyebrow" data-i18n="whyTitle">Зошто нас</p>
         <h2 data-i18n-pair="aboutTitle|aboutTitleEm">Традиција што се <em>продолжува.</em></h2>
         <div class="why" id="why-list"></div>
@@ -64,8 +72,10 @@
     <p class="eyebrow" data-i18n="aboutEyebrow">За нас</p>
     <h2 class="clinic-title" data-i18n="clinic">Стоматолошка ординација Д-⁠р Нечаковски</h2>
     <span class="gold-rule"></span>
-    <img class="about-photo" src="assets/team.jpg" alt="" loading="lazy" width="1600" height="612"
-         data-i18n-attr="alt:clinic">
+    <div class="frame frame--wide">
+      <img class="about-photo" src="assets/team.jpg" alt="" loading="lazy" width="1600" height="612"
+           data-i18n-attr="alt:clinic">
+    </div>
     <p class="about-lede display" data-i18n="aboutText">Ординацијата ја основа д-р Кирил Нечаковски, специјалист по стоматолошка протетика. Денес ја води д-р Александар Нечаковски, со тим посветени доктори кои ја спојуваат традицијата со најсовремената стоматологија.</p>
     <div class="team-grid" id="team"></div>
     <p class="founder" data-i18n="founder">Основач: д-р Кирил Нечаковски, специјалист по стоматолошка протетика</p>
@@ -91,6 +101,8 @@
       <a class="btn btn-gold" href="booking.html"><span data-i18n="ctaBook">Закажете преглед</span></a>
     </div>
   </section>
+
+  </div><!-- /.stack -->
 
 </main>
 

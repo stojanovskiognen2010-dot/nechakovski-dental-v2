@@ -1,8 +1,17 @@
-/* The feed: every block arrives as it comes into view and fades back out as
-   it leaves, plus a scroll-progress hairline across the top of the screen.
+/* The feed, and the motion the scroll drives.
+
+   Two things live here:
+
+   1. Reveals — every block fades up as it comes into view and fades back
+      out as it leaves over the top of the screen.
+   2. Tracks — the hero and the two photographs are given a --p of 0 to 1
+      saying how far through their own travel they are, and the stylesheet
+      does the rest in calc(). Nothing here is an animation with a duration:
+      scroll back up and it all runs backwards, because --p is only ever a
+      statement about where you are on the page.
 
    Loads after site.js, on index.html only — booking.html is a form to fill
-   in, and fields that fade while you are typing in them are no help.
+   in, and fields that move while you are typing in them are no help.
 
    Most of this page is built by PAGE_RENDER, which replaces whole subtrees
    on every language switch, so this re-reads the page on the "site:render"
@@ -17,7 +26,7 @@
   var CONTAINERS = [
     ".hero-inner", ".stats",
     ".services", ".service-list",
-    ".split-inner", ".split-inner > div", ".why",
+    ".split-inner", ".split-copy", ".why",
     ".about-section", ".team-grid",
     "#kontakt", ".contact-grid", ".contact-list",
     ".cta-band .wrap"
@@ -35,6 +44,10 @@
   function motionOK() {
     return !(reduced && reduced.matches) && typeof IntersectionObserver === "function";
   }
+
+  function clamp01(n) { return n < 0 ? 0 : n > 1 ? 1 : n; }
+
+  /* ------------------------------------------------------------- reveals */
 
   function onEntries(entries) {
     entries.forEach(function (entry) {
@@ -83,20 +96,111 @@
     });
   }
 
-  /* ---------------------------------------------------------------------- */
+  /* -------------------------------------------------------------- tracks */
+
+  var tracks = [];
+  var heroTop = 0;
+  var heroTravel = 1;
+
+  /* Measured once per load and resize, never per frame: offsetTop and
+     offsetHeight force layout, and reading them inside the scroll handler
+     would thrash it against the --p we write straight afterwards. */
+  function measureHero(stage, hero) {
+    /* how far the sticky hero can move inside its stage */
+    var travel = stage.offsetHeight - hero.offsetHeight;
+    /* unpinned the stage is only as tall as the hero, so there is no travel
+       to speak of — borrow most of a screen so the photograph and the words
+       still move on their way past */
+    if (travel < 120) travel = Math.max(240, window.innerHeight * 0.7);
+    /* it is already stuck the moment its top reaches its own sticky offset */
+    heroTop = stage.offsetTop - (parseFloat(getComputedStyle(hero).top) || 0);
+    heroTravel = travel;
+  }
+
+  /* 0 at the top of the page, 1 once the stage has been scrolled through */
+  function heroProgress() {
+    return clamp01((window.scrollY - heroTop) / heroTravel);
+  }
+
+  /* 0 as the frame comes up from below, .5 crossing the middle of the
+     screen, 1 once it has gone off the top */
+  function frameProgress(node) {
+    var r = node.getBoundingClientRect();
+    return clamp01((window.innerHeight - r.top) / (window.innerHeight + r.height));
+  }
+
+  /* The hero only pins if its content actually fits the screen. On a short
+     phone a pinned hero would simply cut the bottom off it, so that one
+     scrolls normally and keeps the rest of the motion. */
+  function decidePin() {
+    var root = document.documentElement;
+    var inner = document.querySelector(".hero-inner");
+    if (!inner || !motionOK()) { root.classList.remove("pin-hero"); return; }
+
+    /* Measure unpinned, and take off the padding — that padding goes away
+       once it pins, so counting it would refuse to pin on screens where the
+       content fits perfectly well. */
+    root.classList.remove("pin-hero");
+    var cs = getComputedStyle(inner);
+    var pad = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0);
+    var content = inner.getBoundingClientRect().height - pad;
+    var header = document.querySelector(".site-header");
+    var headerH = header ? header.getBoundingClientRect().height : 64;
+
+    root.classList.toggle("pin-hero", content + 48 <= window.innerHeight - headerH);
+  }
+
+  function collectTracks() {
+    tracks = [];
+    if (!motionOK()) return;
+
+    var stage = document.querySelector(".hero-stage");
+    var hero = stage && stage.querySelector(".hero");
+    if (hero) {
+      measureHero(stage, hero);
+      tracks.push({ node: hero, read: heroProgress, last: -1 });
+    }
+
+    document.querySelectorAll(".frame").forEach(function (f) {
+      tracks.push({
+        node: f,
+        read: function () { return frameProgress(f); },
+        last: -1
+      });
+    });
+  }
+
+  /* every read first, then every write — never one of each, in turn */
+  function drive() {
+    if (!tracks.length) return;
+    var values = tracks.map(function (t) { return t.read(); });
+    for (var i = 0; i < tracks.length; i++) {
+      if (values[i] === tracks[i].last) continue;
+      tracks[i].node.style.setProperty("--p", values[i].toFixed(4));
+      tracks[i].last = values[i];
+    }
+  }
+
+  /* ------------------------------------------------------------ progress */
 
   function progress() {
     if (!bar) return;
     var max = document.documentElement.scrollHeight - window.innerHeight;
     var p = max > 8 ? window.scrollY / max : 0;
-    bar.style.transform = "scaleX(" + Math.min(1, Math.max(0, p)).toFixed(4) + ")";
+    bar.style.transform = "scaleX(" + clamp01(p).toFixed(4) + ")";
   }
+
+  /* ----------------------------------------------------------------- run */
 
   var queued = false;
   function onScroll() {
     if (queued) return;
     queued = true;
-    requestAnimationFrame(function () { queued = false; progress(); });
+    requestAnimationFrame(function () {
+      queued = false;
+      drive();
+      progress();
+    });
   }
 
   function start() {
@@ -106,14 +210,29 @@
       bar.setAttribute("aria-hidden", "true");
       document.body.appendChild(bar);
     }
+    decidePin();      /* changes the layout, so it goes before the measuring */
+    collectTracks();
     mark();
+    drive();
     progress();
   }
 
+  var resizing = null;
+  function onResize() {
+    clearTimeout(resizing);
+    resizing = setTimeout(function () {
+      decidePin();
+      collectTracks();
+      drive();
+      progress();
+    }, 150);
+  }
+
   window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onScroll, { passive: true });
+  window.addEventListener("resize", onResize, { passive: true });
+  window.addEventListener("load", onResize);   /* once the photographs land */
   document.addEventListener("site:render", start);
-  if (reduced && reduced.addEventListener) reduced.addEventListener("change", mark);
+  if (reduced && reduced.addEventListener) reduced.addEventListener("change", start);
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", start);

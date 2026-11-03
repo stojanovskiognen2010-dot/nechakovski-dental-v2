@@ -805,3 +805,89 @@ body { -webkit-tap-highlight-color: color-mix(in oklab, var(--gold) 20%, transpa
   .brand-name { font-size: .85rem; }
   .brand-mark { width: .95rem; height: 1.97rem; }
 }
+
+/* ==========================================================================
+   Scroll-driven motion
+   The scroll position itself drives these, not a timer: feed.js writes a
+   --p of 0 to 1 onto each moving part as it travels, and everything below
+   is a calc() off that. Scroll back up and it runs backwards, because it is
+   not an animation at all — it is just where you are on the page.
+   ========================================================================== */
+
+/* ---- the pinned hero ---------------------------------------------------- */
+
+/* The stage is taller than the screen so the sticky hero inside it has
+   somewhere to travel — the same rule that bit the header. feed.js adds
+   .pin-hero only when the hero's content actually fits the screen, so a
+   short phone never pins and never clips. */
+.pin-hero .hero-stage { height: 150svh; }
+/* It sticks *under* the header rather than at 0, and is short by exactly
+   that much, so the frame it occupies is identical before and after it
+   pins. Sticking at 0 left it hanging 65px below the fold at rest, which
+   pushed the bottom row of figures off the screen. */
+.pin-hero .hero {
+  position: sticky;
+  top: var(--header-h);
+  height: calc(100svh - var(--header-h));
+  min-height: 0;
+  display: grid;
+  align-items: center;
+}
+.pin-hero .hero-inner { padding-block: 0; }
+
+/* the photograph settles back out of its own zoom as you scroll */
+.hero-img {
+  transform: scale(calc(1.18 - var(--p, 1) * .18));
+  transform-origin: 50% 45%;
+  will-change: transform;
+}
+/* and darkens under the text that is leaving */
+.hero-veil { opacity: calc(.72 + var(--p, 0) * .28); }
+/* the words rise away rather than scrolling off */
+.hero-inner {
+  transform: translate3d(0, calc(var(--p, 0) * -6rem), 0);
+  opacity: calc(1 - var(--p, 0) * 1.25);
+}
+
+/* ---- the sheet that rides over it --------------------------------------- */
+
+.stack {
+  position: relative;
+  z-index: 1;
+  background: var(--background);
+  border-start-start-radius: 1.75rem;
+  border-start-end-radius: 1.75rem;
+  box-shadow: 0 -1.25rem 3rem -1rem color-mix(in oklab, var(--ink) 40%, transparent);
+}
+/* with no pin there is no overlap to speak of, so make one */
+.stack { margin-top: -1.75rem; }
+.pin-hero .stack { margin-top: 0; }
+
+/* ---- photographs that travel inside their frame ------------------------- */
+
+.frame { position: relative; overflow: hidden; }
+/* height: 100% has to be explicit — the img carries width/height attributes,
+   and those outrank a CSS aspect-ratio unless a height is given */
+.frame img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  object-fit: cover;
+  transform: translate3d(0, calc((var(--p, .5) - .5) * -3.5rem), 0) scale(1.14);
+}
+.frame--portrait { aspect-ratio: 4 / 5; }
+.frame--wide { aspect-ratio: 1600 / 612; }
+
+.about-section .frame--wide { margin-top: 2.5rem; }
+.about-section .about-photo { margin-top: 0; }
+
+/* ---- motion off --------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-stage { height: auto !important; }
+  .hero { position: static !important; height: auto !important; }
+  .hero-img { transform: none !important; }
+  .hero-veil { opacity: 1 !important; }
+  .hero-inner { transform: none !important; opacity: 1 !important; }
+  .frame img { transform: none !important; }
+}
