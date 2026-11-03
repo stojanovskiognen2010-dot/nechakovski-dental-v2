@@ -33,6 +33,62 @@ by an `IntersectionObserver` in `site.js`. Tapping a link in the mobile menu
 scrolls explicitly rather than letting the browser follow the anchor: hiding
 the menu panel in the same handler cancels the browser's own jump.
 
+## Text that arrives and leaves
+
+`assets/feed.js` gives the one page the feel of a feed: each block fades up
+as it comes into view and fades back out as it leaves over the top of the
+screen. Siblings are staggered 70ms apart, capped after the fifth so a long
+list does not crawl in.
+
+It works off containers rather than individual elements, because almost
+everything here is built by `PAGE_RENDER`, which replaces whole subtrees on
+every language switch. `site.js` fires a `site:render` event at the end of
+each render and `feed.js` re-reads the page from that. A container listed in
+`CONTAINERS` that is itself a child of another listed container is skipped as
+a unit — it animates its own children instead, so nothing is animated twice.
+
+Two things keep it safe:
+
+- Nothing is hidden until `feed.js` has added `js-reveal` to `<html>`, so the
+  page reads normally with JavaScript off or if the script fails.
+- It does not run at all under `prefers-reduced-motion`, and the CSS forces
+  everything visible in that case as well.
+
+`booking.html` deliberately does not load it. Form fields that fade while
+you are typing in them are no help to anyone.
+
+A gold hairline across the very top of the screen tracks how far down the
+page you are.
+
+## Devices
+
+The whole thing is one column that has to hold from a 320px phone to a 4K
+monitor, so most of the sizing is fluid — `--gutter`, the hero padding, the
+headings, the map — rather than stepped at breakpoints.
+
+Things worth knowing before changing the header:
+
+- **The desktop nav appears at 60rem, not 48rem.** At 768px the four labels,
+  the language switch and the booking button sat flush against the wordmark
+  with no gap at all, and the Greek labels are longer still. A tablet in
+  portrait gets the menu button instead, which is the easier target anyway.
+- **`#site-header` is `display: contents`.** A sticky element can only travel
+  inside its parent's box, and that wrapper is exactly one header tall, so
+  `.site-header` declared `position: sticky` and then scrolled away with the
+  page regardless. Taking the wrapper out of the box tree hands the header
+  back to `<body>`, where it sticks for real. On a page this long that is the
+  difference between having a menu and not.
+- **The wordmark subtitle** needs 186px and only has about 155px on a phone,
+  so it steps down under 26rem and goes entirely under 22rem.
+- `html` uses `overflow-x: clip`, never `hidden` — `hidden` would make `html`
+  a scroll container and break the sticky header all over again.
+
+Touch targets are brought up to 44px under `pointer: coarse`, and the hover
+states that change a background are only promised to a real pointer, so a tap
+does not leave one stuck on. In landscape on a phone the hero heading is
+sized against the viewport height instead of its width: 8.5vw of a 740px
+screen is a 63px heading on a 360px-tall one.
+
 ## Languages
 
 The МК / EN / ΕΛ buttons in the header switch the whole site instantly. The

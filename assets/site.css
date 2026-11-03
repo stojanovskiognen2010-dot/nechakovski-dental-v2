@@ -239,7 +239,11 @@ p { text-wrap: pretty; }
   text-transform: uppercase;
 }
 
-@media (min-width: 48rem) {
+/* 60rem, not 48rem: at 768px the four nav labels, the language switch and
+   the booking button landed flush against the wordmark with no gap at all,
+   and the Greek labels are longer still. A tablet in portrait gets the
+   menu button, which is the easier target anyway. */
+@media (min-width: 60rem) {
   .nav-desktop { display: flex; }
   .header-mobile { display: none; }
   .nav-mobile { display: none !important; }
@@ -604,4 +608,200 @@ p { text-wrap: pretty; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+
+/* ==========================================================================
+   The feed
+   The practice asked for one page you scroll rather than a menu to click
+   through, so each block arrives as it comes into view and fades back out
+   as it leaves. feed.js adds .js-reveal to <html> before it hides anything,
+   which keeps the page readable with JavaScript off, and it never runs at
+   all when the visitor has asked for reduced motion.
+   ========================================================================== */
+
+html.js-reveal .reveal {
+  opacity: 0;
+  transform: translate3d(0, 1.5rem, 0);
+  transition: opacity .65s cubic-bezier(.22, .61, .36, 1),
+              transform .65s cubic-bezier(.22, .61, .36, 1);
+}
+/* on the way out over the top of the screen it keeps going up, rather than
+   sinking back down against the scroll */
+html.js-reveal .reveal.out-up { transform: translate3d(0, -1.5rem, 0); }
+/* --d staggers siblings; it is only applied on the way in, so leaving is
+   immediate and the page never feels like it is lagging behind the scroll */
+html.js-reveal .reveal.is-in {
+  opacity: 1;
+  transform: none;
+  transition-delay: var(--d, 0ms);
+}
+
+/* how far down the one page you are */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;            /* over the sticky header */
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Devices
+   One continuous column that has to hold from a 320px phone to a 4K monitor.
+   ========================================================================== */
+
+:root {
+  /* the gutter grows with the screen instead of stepping at a breakpoint */
+  --gutter: clamp(1rem, 4vw, 2rem);
+}
+
+/* overflow-x: clip, not hidden — hidden would make <html> a scroll container
+   and the sticky header would stop sticking */
+html { overflow-x: clip; }
+body { -webkit-tap-highlight-color: color-mix(in oklab, var(--gold) 20%, transparent); }
+
+/* ---- the first screen --------------------------------------------------- */
+
+.hero h1 { font-size: clamp(2.25rem, 8.5vw, 4.5rem); }
+.hero-inner {
+  padding-top: clamp(3.5rem, 11vw, 9rem);
+  padding-bottom: clamp(3rem, 9vw, 8rem);
+}
+
+/* on a laptop or desktop the first screen is held to the viewport, so the
+   scroll starts from a full-bleed photograph rather than mid-section */
+@media (min-width: 64rem) {
+  .hero { display: grid; align-items: center; min-height: min(100svh, 46rem); }
+}
+
+/* ---- small phones (320–375px) ------------------------------------------- */
+
+@media (max-width: 23.5rem) {
+  .btn { padding: .875rem 1.25rem; font-size: .7rem; letter-spacing: .18em; }
+  .stats { gap: 1.25rem; margin-top: 3rem; }
+  .stats dt { font-size: 1.875rem; }
+  .brand-name { font-size: .95rem; }
+  .brand-sub { font-size: .5rem; letter-spacing: .16em; }
+  .service-block h3 { font-size: 1.625rem; }
+  .team-card, .card { padding: 1.5rem; }
+}
+
+/* ---- a phone turned sideways ------------------------------------------- */
+
+@media (orientation: landscape) and (max-height: 32rem) {
+  .hero { min-height: 0; }
+  .hero-inner { padding-block: 2.5rem; }
+  .stats { margin-top: 2rem; padding-top: 1.25rem; gap: 1rem 1.5rem; }
+  .section { padding-block: 3.5rem; }
+}
+
+/* ---- tablets and up ----------------------------------------------------- */
+
+@media (min-width: 64rem) {
+  /* four doctors, four columns — at 2 columns the row of names used to sit
+     in the middle of the section with the grid lines stranded beside it */
+  .team-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* ---- large monitors ----------------------------------------------------- */
+
+@media (min-width: 100rem) {
+  :root { --wrap: 78rem; }
+  .section { padding-block: 8rem; }
+}
+
+/* ---- touch and hover ---------------------------------------------------- */
+
+/* the language buttons and the menu were a 24px target; a thumb needs more */
+@media (pointer: coarse) {
+  .lang button { padding: .5rem .45rem; }
+  .menu-toggle { padding: .625rem; }
+  .nav-mobile a.m-link { padding-block: 1.1rem; }
+}
+
+/* a tap leaves :hover stuck on a touch screen, so the hover states that
+   change a background are only promised to a real pointer */
+@media (hover: none) {
+  .card:hover { background: var(--background); }
+  .btn-gold:hover { background: var(--gold); }
+  .day:hover, .slot:hover { border-color: var(--border); }
+}
+
+/* ---- the long middle ---------------------------------------------------- */
+
+.about-lede { font-size: clamp(1.25rem, 3.2vw, 1.875rem); }
+.map { height: clamp(16rem, 48vh, 24rem); }
+
+@media (min-width: 48rem) {
+  .map { height: 100%; min-height: 28rem; }
+}
+
+/* the menu can be taller than a small phone in landscape */
+.nav-mobile.open {
+  max-height: calc(100dvh - var(--header-h));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* ---- motion off --------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html.js-reveal .reveal,
+  html.js-reveal .reveal.out-up { opacity: 1; transform: none; }
+  .scroll-progress { display: none; }
+}
+
+/* ---- touch targets ------------------------------------------------------ */
+
+/* 44px square is the smallest comfortable thumb target; the language
+   buttons measured 37x35 and the menu button 42x42 */
+@media (pointer: coarse) {
+  .lang button { min-width: 2.375rem; min-height: 2.75rem; padding-inline: .35rem; }
+  .menu-toggle { min-width: 2.75rem; min-height: 2.75rem; }
+}
+
+/* ---- a phone turned sideways, continued --------------------------------- */
+
+/* 8.5vw of a 740px-wide screen is a 63px heading on a 360px-tall one, which
+   left no room for anything under it — in landscape the heading is sized
+   against the height instead */
+@media (orientation: landscape) and (max-height: 32rem) {
+  .hero h1 { font-size: clamp(1.75rem, 7vh, 2.75rem); margin-top: .75rem; }
+  .hero-text { font-size: .9375rem; margin-top: 1rem; }
+  .hero-cta { margin-top: 1.5rem; }
+  .cta-band .wrap { padding-block: 3.5rem; }
+}
+
+/* ---- the header actually sticking --------------------------------------- */
+
+/* site.js builds the header into <div id="site-header">, and a sticky element
+   can only travel inside its parent's box — that div is exactly one header
+   tall, so .site-header declared position: sticky and then scrolled away with
+   the page. display: contents takes the wrapper out of the box tree, which
+   hands .site-header back to <body> and lets it stick for real. It matters
+   more now the whole site is one long scroll: the menu has to stay reachable
+   from the bottom of it. */
+#site-header { display: contents; }
+
+/* ---- the wordmark on a phone -------------------------------------------- */
+
+/* "СТОМАТОЛОШКА ОРДИНАЦИЈА" needed 186px under a 157px wordmark and broke
+   onto a second line, which pushed the header out of shape. Less tracking
+   and a smaller step put it back on one */
+@media (max-width: 26rem) {
+  .brand-sub { font-size: .5rem; letter-spacing: .12em; }
+}
+
+/* On a 320px screen the wordmark and the menu meet with nothing between
+   them. The subtitle is decoration, so it goes, and the name steps down
+   enough to clear the language buttons. */
+@media (max-width: 22rem) {
+  .brand-sub { display: none; }
+  .brand-name { font-size: .85rem; }
+  .brand-mark { width: .95rem; height: 1.97rem; }
 }

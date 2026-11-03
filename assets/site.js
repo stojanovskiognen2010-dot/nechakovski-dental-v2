@@ -259,6 +259,10 @@
     if (typeof window.PAGE_RENDER === "function") window.PAGE_RENDER(t, lang);
 
     watchSections();
+
+    /* feed.js re-reads the page from here: everything above replaces whole
+       subtrees, so the scroll reveals have to be re-attached each time */
+    document.dispatchEvent(new CustomEvent("site:render"));
   }
 
   /* Marks the nav item for whichever section is in the middle of the screen.
