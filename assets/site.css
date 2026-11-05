@@ -869,8 +869,7 @@ body { -webkit-tap-highlight-color: color-mix(in oklab, var(--gold) 20%, transpa
 /* height: 100% has to be explicit — the img carries width/height attributes,
    and those outrank a CSS aspect-ratio unless a height is given */
 .frame img,
-.years .shot img,
-.gallery .shot img {
+.years .shot img {
   width: 100%;
   height: 100%;
   aspect-ratio: auto;
@@ -994,13 +993,6 @@ body { -webkit-tap-highlight-color: color-mix(in oklab, var(--gold) 20%, transpa
 }
 @media (min-width: 48rem) { .years { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; } }
 
-.gallery { display: grid; gap: 1rem; margin-top: 3rem; }
-.gallery .shot:first-child { aspect-ratio: 3 / 2; }
-.gallery .shot:last-child { aspect-ratio: 3 / 4; }
-@media (min-width: 48rem) {
-  .gallery { grid-template-columns: 1.4fr 1fr; gap: 1.25rem; }
-  .gallery .shot { aspect-ratio: auto; height: 30rem; }
-}
 
 /* ---- reviews ------------------------------------------------------------- */
 
@@ -1034,3 +1026,66 @@ body { -webkit-tap-highlight-color: color-mix(in oklab, var(--gold) 20%, transpa
 /* a tinted band sits on --secondary, so the cards on it take the paper tone */
 .band .reviews { background: color-mix(in oklab, var(--border) 70%, transparent); }
 .band .review { background: var(--background); }
+
+/* --------------------------------------------------------------------------
+   News — the practice's own posts, carried over from the old site
+   -------------------------------------------------------------------------- */
+
+/* A list, not a grid of tiles: these are dated announcements of very different
+   lengths, and a hairline between them reads as a feed rather than as cards
+   fighting to be the same height. */
+.posts { margin-top: 3rem; border-top: 1px solid var(--border); }
+
+.post {
+  display: grid;
+  gap: 1.5rem;
+  padding-block: 2.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.post-date {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: .7rem;
+  font-weight: 500;
+  letter-spacing: .22em;
+  color: var(--gold);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.post-body h3 { margin-top: .6rem; font-size: clamp(1.375rem, 3vw, 1.75rem); }
+.post-body p {
+  margin-top: .9rem;
+  max-width: 44rem;
+  color: var(--muted-foreground);
+  line-height: 1.68;
+}
+
+/* The pictures came off a site built in 2001; the widest is 470px. They get a
+   column they fit in rather than one they have to be stretched across. */
+.post-shot { margin: 0; }
+.post-shot img {
+  display: block;
+  width: 100%;
+  max-width: 17rem;
+  height: auto;
+  border: 1px solid var(--border);
+  background: var(--card);
+}
+.post-shot a { display: block; }
+
+@media (min-width: 48rem) {
+  .post { grid-template-columns: minmax(0, 1fr) 17rem; align-items: start; }
+  .post-shot img { max-width: none; }
+}
+
+.news-cta { margin-top: 2.5rem; }
+
+/* ---- the archive page ---------------------------------------------------- */
+
+.page-hero-note { margin-top: 1.5rem; max-width: 34rem; color: var(--gold-soft); }
+
+.group-title {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+}
+.group-title + .posts { margin-top: 1.75rem; }
+.archive .posts + .group-title { margin-top: 4.5rem; }

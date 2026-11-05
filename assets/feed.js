@@ -10,8 +10,10 @@
       scroll back up and it all runs backwards, because --p is only ever a
       statement about where you are on the page.
 
-   Loads after site.js, on index.html only — booking.html is a form to fill
-   in, and fields that move while you are typing in them are no help.
+   Loads after site.js on index.html and vesti.html. Not on booking.html —
+   that is a form to fill in, and fields that move while you are typing in
+   them are no help. With no hero on the page the tracks are simply empty and
+   the reveals carry on by themselves.
 
    Most of this page is built by PAGE_RENDER, which replaces whole subtrees
    on every language switch, so this re-reads the page on the "site:render"
@@ -29,7 +31,7 @@
     ".split-inner", ".split-copy", ".why",
     ".about-section", ".team-grid",
     "#oprema", ".equip", "#godini", ".years",
-    "#recenzii", ".reviews", "#galerija", ".gallery",
+    "#recenzii", ".reviews", "#vesti", ".posts", ".archive",
     "#kontakt", ".contact-grid", ".contact-list",
     ".cta-band .wrap"
   ].join(",");
@@ -165,7 +167,7 @@
 
     /* The equipment shots are small and sit side by side; drifting those
        as well would be fidgety. Only the full-width photographs travel. */
-    document.querySelectorAll(".frame, .years .shot, .gallery .shot").forEach(function (f) {
+    document.querySelectorAll(".frame, .years .shot").forEach(function (f) {
       tracks.push({
         node: f,
         read: function () { return frameProgress(f); },

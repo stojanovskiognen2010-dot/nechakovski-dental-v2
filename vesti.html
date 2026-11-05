@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="mk" data-title-key="newsPageTitle">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Вести · Стоматолошка ординација Д-р Нечаковски</title>
+<meta name="description" content="Новости од стоматолошката ординација Д-р Нечаковски во Битола и архива на објавите во медиумите, од 2001 година до денес.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Commissioner:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<main>
+
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="clinic">Стоматолошка ординација Д-⁠р Нечаковски</p>
+      <h1 data-i18n="newsPageTitle">Вести</h1>
+      <span class="gold-rule"></span>
+      <p class="muted page-hero-note" data-i18n="newsSource">Архивата е пренесена од поранешниот сајт stomatolog.com.mk.</p>
+    </div>
+  </section>
+
+  <!-- Two groups, both newest first: what the practice announced itself, and
+       where it has been written about. Both come from assets/news.js. -->
+  <section class="wrap section archive">
+    <h2 class="group-title" data-i18n="groupNews">Новости од ординацијата</h2>
+    <div class="posts" id="posts-news"></div>
+
+    <h2 class="group-title" data-i18n="groupPress">Во медиумите</h2>
+    <div class="posts" id="posts-press"></div>
+  </section>
+
+  <!-- Booking CTA, the same one that closes the home page -->
+  <section class="cta-band">
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="bookInfo">Само за преглед · 30 минути</p>
+      <h2 data-i18n="bookTitle">Закажете преглед</h2>
+      <p class="sub" data-i18n="bookText">Преглед од 30 минути. Изберете ден и час — ќе ве контактираме за потврда.</p>
+      <a class="btn btn-gold" href="booking.html"><span data-i18n="ctaBook">Закажете преглед</span></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/i18n.js"></script>
+<script src="assets/news.js"></script>
+<script>
+window.PAGE_RENDER = function (t, lang) {
+  ["news", "press"].forEach(function (group) {
+    var box = document.getElementById("posts-" + group);
+    var posts = window.NEWS.filter(function (p) { return p.group === group; });
+    box.replaceChildren.apply(box, posts.map(function (post) {
+      return window.NEWS_CARD(post, lang);
+    }));
+  });
+};
+</script>
+<script src="assets/site.js"></script>
+<script src="assets/feed.js"></script>
+</body>
+</html>

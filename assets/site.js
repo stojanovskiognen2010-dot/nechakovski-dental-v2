@@ -35,6 +35,7 @@
     { hash: "pocetna", key: "home" },
     { hash: "uslugi", key: "services" },
     { hash: "za-nas", key: "about" },
+    { hash: "vesti", key: "news" },
     { hash: "kontakt", key: "contact" }
   ];
 

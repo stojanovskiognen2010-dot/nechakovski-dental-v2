@@ -187,8 +187,9 @@ of it built from material the practice actually has:
   order in `SERVICE_ICONS`, so re-ordering `categories` in `i18n.js` means
   re-ordering that array too.
 - **Equipment** — the Sirolaser Blue and the KaVo OP 3D, both named in the
-  service lists above them, photographed in the surgery rather than taken from
-  a manufacturer catalogue.
+  service lists above them. The KaVo shot is the practice's own, off their old
+  site; the curing light came from the Google listing and has **not** been
+  confirmed with them — see the warning below.
 - **The team by year** — 2019, 2022 and 2025. The practice has these three
   photographs and no others, which is the point: the copy claims three decades
   of continuity and these are the evidence of it.
@@ -198,16 +199,57 @@ of it built from material the practice actually has:
   attribute so a screen reader does not read Macedonian in an English voice.
   **Do not invent more.** If the practice wants others, take them from the
   listing verbatim.
-- **The rooms** — the surgery and the reception a patient walks into.
+- **News** — the three most recent posts, with the whole archive on
+  `vesti.html`. See below.
 
 Alternating sections carry `.band`, which paints a 100vw strip behind a
 container that is capped at 72rem. That works only because `<html>` has
 `overflow-x: clip`; with `visible` it would produce a horizontal scrollbar.
 
-Photographs in the years and gallery sections drift inside their frames on
-scroll, the same `--p` mechanism the hero uses. The equipment shots sit side
+Photographs in the years section drift inside their frames on scroll, the same
+`--p` mechanism the hero uses. The equipment shots sit side
 by side and are deliberately left still — two small images jostling against
 each other reads as fidgety rather than as depth.
+
+
+## The news
+
+The practice asked for every piece of news from their old site, carried over
+as posts. It is all in `assets/news.js` — data only, plus one `NEWS_CARD`
+builder shared by both places it is drawn:
+
+- `index.html#vesti` draws the three most recent, first paragraph only
+- `vesti.html` draws all 29, in two groups
+
+The groups follow the old site, not a judgement of ours: `news` is what was
+under **Новости од ординацијата** on its homepage (13 posts, 2016–2024), and
+`press` is what was on its PRESS pages, which the English version of that site
+called the News Archive (16 posts, 2001–2008). The pictures are its own, out
+of `/sliki`; none is wider than 470px, so the cards give them a 17rem column
+rather than stretching them. The TOP-100 thumbnail links to the full scan, the
+way the old site opened it in a window of its own.
+
+Dates are **strings in dd.mm.yyyy**, the way the practice wrote them, with an
+`iso` field only to sort by. Chrome's `Intl` has no Macedonian, so a formatted
+date would come out silently in English.
+
+### What was left out, and what still needs a native read
+
+Two posts from the old English homepage are **not** here, and the practice
+should be asked whether they want them:
+
+- **02.07.2014** — a Foursquare check-in offering a gift, "valid until
+  01.09.2014". A dead offer behind a dead QR code.
+- **24.09.2013** — "visit our Facebook page", a call to action rather than news.
+
+Everything else is in, the two March 2020 COVID notices included. They read as
+history because every post carries its date and the 12.05.2020 post above them
+says work resumed.
+
+The Macedonian is the old site's own wording, tidied for punctuation only.
+Where the practice published its own English for a post, that English is
+theirs. Everything else in English, and **all** of the Greek, is translated
+here and still wants a native read.
 
 ## Booking
 
@@ -237,3 +279,15 @@ Swap `url` and `key` in `config.js` to move the site onto a different database.
 - The Greek spelling of the doctors' names
 - `<meta name="robots" content="noindex, nofollow">` is on every page —
   remove it when the site goes live for real
+- **Which photographs are actually theirs.** On 05.11.2026 the practice looked
+  at the gallery section and said of the two pictures in it — a procedure, and
+  a reception — "these are other people, it is not us". Both are gone, from
+  this build and from `Website Nechakovski`, and the section with them. They
+  came from the Google listing, where anyone can upload: an earlier pass had
+  already found one listing photo belonging to a different practice
+  ("MAK DENTAL") and left it out. **`curing-light.webp` comes from that same
+  listing and has not been confirmed.** `team-2019/2022/2025.webp` and
+  `kavo-op3d.webp` are safe — the team photographs show the founder and
+  Dr. Aleksandar, and the KaVo is off the practice's own old site.
+- Whether the two posts listed under "The news" above should be carried over
+  as well
