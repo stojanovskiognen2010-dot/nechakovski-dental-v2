@@ -53,6 +53,26 @@
     <div class="service-list" id="service-list"></div>
   </section>
 
+  <!-- Equipment. Two machines named in the service lists above, photographed
+       in the surgery itself rather than taken from a manufacturer catalogue. -->
+  <section class="wrap section band" id="oprema">
+    <p class="eyebrow" data-i18n="equipEyebrow">Опрема</p>
+    <h2 data-i18n-pair="equipTitle|equipTitleEm">Со што <em>работиме.</em></h2>
+    <p class="lede" data-i18n="equipText">Апаратите што стојат зад терапиите погоре.</p>
+    <div class="equip">
+      <figure>
+        <span class="shot"><img src="assets/curing-light.webp" alt="" width="760" height="570"
+              loading="lazy" data-i18n-attr="alt:altCuring"></span>
+        <figcaption>Sirolaser Blue</figcaption>
+      </figure>
+      <figure>
+        <span class="shot"><img src="assets/kavo-op3d.webp" alt="" width="370" height="412"
+              loading="lazy" data-i18n-attr="alt:altKavo"></span>
+        <figcaption>KaVo OP 3D</figcaption>
+      </figure>
+    </div>
+  </section>
+
   <!-- Why us -->
   <section class="split">
     <div class="wrap split-inner">
@@ -79,6 +99,55 @@
     <p class="about-lede display" data-i18n="aboutText">Ординацијата ја основа д-р Кирил Нечаковски, специјалист по стоматолошка протетика. Денес ја води д-р Александар Нечаковски, со тим посветени доктори кои ја спојуваат традицијата со најсовремената стоматологија.</p>
     <div class="team-grid" id="team"></div>
     <p class="founder" data-i18n="founder">Основач: д-р Кирил Нечаковски, специјалист по стоматолошка протетика</p>
+  </section>
+
+  <!-- The same team photographed in three different years. The practice has
+       these three and no others, which is exactly what makes them worth
+       showing: it is the continuity the copy claims, evidenced. -->
+  <section class="wrap section" id="godini">
+    <p class="eyebrow" data-i18n="yearsEyebrow">Тимот низ годините</p>
+    <h2 data-i18n-pair="yearsTitle|yearsTitleEm">Истите луѓе, <em>година по година.</em></h2>
+    <p class="lede" data-i18n="yearsText">Традицијата не е збор на сајт.</p>
+    <div class="years">
+      <figure>
+        <span class="shot"><img src="assets/team-2019.webp" alt="" width="1600" height="708" loading="lazy"></span>
+        <figcaption>2019</figcaption>
+      </figure>
+      <figure>
+        <span class="shot"><img src="assets/team-2022.webp" alt="" width="1600" height="718" loading="lazy"></span>
+        <figcaption>2022</figcaption>
+      </figure>
+      <figure>
+        <span class="shot"><img src="assets/team-2025.webp" alt="" width="1600" height="612" loading="lazy"></span>
+        <figcaption>2025</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Real five-star reviews from the Google listing, quoted word for word and
+       left in the language each was written in. They are not ours to translate
+       or tidy, so only the labels around them switch language. -->
+  <section class="wrap section band" id="recenzii">
+    <p class="eyebrow" data-i18n="reviewsEyebrow">Што велат пациентите</p>
+    <h2 data-i18n-pair="reviewsTitle|reviewsTitleEm">4,9 од 5 <em>на Google.</em></h2>
+    <ul class="reviews" id="reviews"></ul>
+    <p class="reviews-cta">
+      <a class="btn btn-primary" id="reviews-link" target="_blank" rel="noreferrer"
+         href="https://g.page/r/CYx-n9bsIpA8EAQ/review" data-i18n="reviewsLink">Сите рецензии на Google</a>
+    </p>
+    <p class="muted fineprint" data-i18n="reviewsFine">Оценка 4,9 од 31 рецензија на Google.</p>
+  </section>
+
+  <!-- The rooms a patient actually walks into. -->
+  <section class="wrap section" id="galerija">
+    <p class="eyebrow" data-i18n="galleryEyebrow">Ординацијата</p>
+    <h2 data-i18n-pair="galleryTitle|galleryTitleEm">Каде ќе <em>седнете.</em></h2>
+    <div class="gallery">
+      <figure class="shot"><img src="assets/surgery.webp" alt="" width="900" height="601"
+              loading="lazy" data-i18n-attr="alt:altSurgery"></figure>
+      <figure class="shot"><img src="assets/reception.webp" alt="" width="760" height="1013"
+              loading="lazy" data-i18n-attr="alt:altReception"></figure>
+    </div>
   </section>
 
   <!-- Contact -->
@@ -110,6 +179,21 @@
 
 <script src="assets/i18n.js"></script>
 <script>
+/* Verbatim from the Google listing, each left in the language it was written
+   in. Quotes are not ours to translate, so these sit outside the dictionary
+   and only the labels around them switch language. */
+var REVIEWS = [
+  { who: "Katy P", lang: "mk",
+    text: "Ова беше мој прв пат во оваа пракса и можам од срце да ја препорачам! Тие се многу, многу пријателски расположени и знаат што прават." },
+  { who: "I S", lang: "mk",
+    text: "Најпрофесионален став од сите вработени. Светска класа. Браво. Особено д-р Елена, ви благодарам многу за мојата подобрена насмевка. Вие сте најдобри!" },
+  { who: "Jovanka Papathanasiou", lang: "en",
+    text: "Excellent, professional and friendly dentist, good and friendly staff. The place to go for healthy teeth! Highly recommended!" }
+];
+
+/* Follows the order of t.categories. */
+var SERVICE_ICONS = ["svcTooth", "svcCrown", "svcChild", "svcGum", "svcLaser", "svcScan"];
+
 window.PAGE_RENDER = function (t) {
   var S = window.SITE, el = S.el, C = window.CLINIC;
 
@@ -134,18 +218,40 @@ window.PAGE_RENDER = function (t) {
     return box;
   }));
 
-  /* Every service, in full — the page is one scroll now, so there is no
-     separate services page to link out to */
+  /* Every service, in full, one card per category. Six bare lists of text
+     read as a document; a card with its own mark reads as a thing. */
   var list = document.getElementById("service-list");
   list.replaceChildren.apply(list, t.categories.map(function (cat, i) {
-    var block = el("div", "service-block");
-    block.appendChild(el("span", "card-num", "0" + (i + 1)));
-    block.appendChild(el("h3", null, cat.name));
+    var card = el("article", "svc");
+    var head = el("div", "svc-head");
+    var ico = el("span", "svc-ico");
+    ico.innerHTML = S.icons[SERVICE_ICONS[i % SERVICE_ICONS.length]];
+    head.appendChild(ico);
+    head.appendChild(el("span", "card-num", "0" + (i + 1)));
+    card.appendChild(head);
+    card.appendChild(el("h3", null, cat.name));
     var ul = el("ul");
     cat.items.forEach(function (item) { ul.appendChild(el("li", null, item)); });
-    block.appendChild(ul);
-    return block;
+    card.appendChild(ul);
+    return card;
   }));
+
+  /* Reviews. The quote keeps its own lang attribute so a screen reader does
+     not read Macedonian with an English voice, or the other way round. */
+  var revBox = document.getElementById("reviews");
+  if (revBox) {
+    revBox.replaceChildren.apply(revBox, REVIEWS.map(function (r) {
+      var li = el("li", "review");
+      var stars = el("span", "stars", "★★★★★");
+      stars.setAttribute("aria-hidden", "true");
+      li.appendChild(stars);
+      var quote = el("p", null, r.text);
+      quote.lang = r.lang;
+      li.appendChild(quote);
+      li.appendChild(el("span", "review-who", r.who + " · Google"));
+      return li;
+    }));
+  }
 
   /* Why us */
   var why = document.getElementById("why-list");

@@ -176,6 +176,39 @@ Dates on the booking page are spelled out from `weekdaysLong` / `monthsLong`
 in `i18n.js` rather than through `Intl`, because Chrome has no Macedonian
 date data and quietly returns English.
 
+## What is on the page
+
+The middle of this site used to be six bare lists of text and a grid of four
+names, which read as a document rather than a practice. What it has now, all
+of it built from material the practice actually has:
+
+- **Services as cards**, one per category, each with its own drawn mark. The
+  six icons live in `site.js` under `svc*` and are matched to categories by
+  order in `SERVICE_ICONS`, so re-ordering `categories` in `i18n.js` means
+  re-ordering that array too.
+- **Equipment** — the Sirolaser Blue and the KaVo OP 3D, both named in the
+  service lists above them, photographed in the surgery rather than taken from
+  a manufacturer catalogue.
+- **The team by year** — 2019, 2022 and 2025. The practice has these three
+  photographs and no others, which is the point: the copy claims three decades
+  of continuity and these are the evidence of it.
+- **Reviews** — three real five-star reviews from the Google listing, quoted
+  word for word. They live in `REVIEWS` in `index.html`, not in `i18n.js`,
+  because a quote is not ours to translate: each keeps its own `lang`
+  attribute so a screen reader does not read Macedonian in an English voice.
+  **Do not invent more.** If the practice wants others, take them from the
+  listing verbatim.
+- **The rooms** — the surgery and the reception a patient walks into.
+
+Alternating sections carry `.band`, which paints a 100vw strip behind a
+container that is capped at 72rem. That works only because `<html>` has
+`overflow-x: clip`; with `visible` it would produce a horizontal scrollbar.
+
+Photographs in the years and gallery sections drift inside their frames on
+scroll, the same `--p` mechanism the hero uses. The equipment shots sit side
+by side and are deliberately left still — two small images jostling against
+each other reads as fidgety rather than as depth.
+
 ## Booking
 
 `assets/config.js` points at the same database as the Lovable project, using

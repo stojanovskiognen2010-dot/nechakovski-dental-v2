@@ -28,6 +28,8 @@
     ".services", ".service-list",
     ".split-inner", ".split-copy", ".why",
     ".about-section", ".team-grid",
+    "#oprema", ".equip", "#godini", ".years",
+    "#recenzii", ".reviews", "#galerija", ".gallery",
     "#kontakt", ".contact-grid", ".contact-list",
     ".cta-band .wrap"
   ].join(",");
@@ -161,7 +163,9 @@
       tracks.push({ node: hero, read: heroProgress, last: -1 });
     }
 
-    document.querySelectorAll(".frame").forEach(function (f) {
+    /* The equipment shots are small and sit side by side; drifting those
+       as well would be fidgety. Only the full-width photographs travel. */
+    document.querySelectorAll(".frame, .years .shot, .gallery .shot").forEach(function (f) {
       tracks.push({
         node: f,
         read: function () { return frameProgress(f); },

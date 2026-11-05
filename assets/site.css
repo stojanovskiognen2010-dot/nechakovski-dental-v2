@@ -868,7 +868,9 @@ body { -webkit-tap-highlight-color: color-mix(in oklab, var(--gold) 20%, transpa
 .frame { position: relative; overflow: hidden; }
 /* height: 100% has to be explicit — the img carries width/height attributes,
    and those outrank a CSS aspect-ratio unless a height is given */
-.frame img {
+.frame img,
+.years .shot img,
+.gallery .shot img {
   width: 100%;
   height: 100%;
   aspect-ratio: auto;
@@ -891,3 +893,144 @@ body { -webkit-tap-highlight-color: color-mix(in oklab, var(--gold) 20%, transpa
   .hero-inner { transform: none !important; opacity: 1 !important; }
   .frame img { transform: none !important; }
 }
+
+/* ==========================================================================
+   Making it read as a practice rather than a document
+
+   Six bare lists of text and a grid of four names was the whole middle of
+   this page. These are the pieces that give it something to look at — all of
+   them built from the photographs and reviews the practice actually has.
+   ========================================================================== */
+
+/* ---- a full-bleed tint, from inside a .wrap ----------------------------- */
+
+/* The section is a .wrap, so it is capped at 72rem and cannot paint to the
+   edges on its own. This lays a 100vw strip behind it instead. 100vw ignores
+   the scrollbar, which would normally mean a horizontal scrollbar — the
+   overflow-x: clip on <html> in the device pass is what makes it safe. */
+.band { position: relative; }
+.band::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset-block: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  background: var(--secondary);
+}
+
+/* ---- services, as cards -------------------------------------------------- */
+
+/* The hairline grid the card and team grids already use, so this reads as
+   part of the same page rather than a component borrowed from elsewhere. */
+.service-list {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1px;
+  background: var(--border);
+  margin-top: 3rem;
+}
+.svc {
+  display: flex;
+  flex-direction: column;
+  background: var(--background);
+  padding: 2rem 1.75rem 2.25rem;
+  transition: background-color .3s;
+}
+.svc:hover { background: var(--card); }
+.svc-head { display: flex; align-items: center; justify-content: space-between; }
+.svc-ico { display: grid; place-items: center; color: var(--gold); }
+.svc-ico svg { display: block; }
+.svc h3 { margin-top: 1.15rem; font-size: 1.5rem; }
+.svc ul { margin-top: 1.15rem; border-top: 1px solid var(--border); }
+.svc li {
+  padding-block: .7rem;
+  font-size: .875rem;
+  color: var(--muted-foreground);
+  border-bottom: 1px solid var(--border);
+}
+.svc li:last-child { border-bottom: 0; padding-bottom: 0; }
+
+@media (min-width: 40rem) { .service-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 64rem) { .service-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* ---- photographs --------------------------------------------------------- */
+
+/* A clipping frame. The aspect ratio lives here, and the image is told to
+   fill it — height: 100% has to be explicit, because every one of these
+   carries width and height attributes and those outrank a CSS aspect-ratio
+   unless a height is given. */
+.shot {
+  display: block;
+  overflow: hidden;
+  background: var(--secondary);
+}
+.shot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.equip { display: grid; gap: 2rem; margin-top: 3rem; }
+.equip .shot { aspect-ratio: 4 / 3; }
+.equip figcaption {
+  margin-top: .9rem;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: -.01em;
+}
+@media (min-width: 40rem) { .equip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.years { display: grid; gap: 2rem; margin-top: 3rem; }
+.years .shot { aspect-ratio: 16 / 9; }
+.years figcaption {
+  margin-top: .85rem;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--gold);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+@media (min-width: 48rem) { .years { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; } }
+
+.gallery { display: grid; gap: 1rem; margin-top: 3rem; }
+.gallery .shot:first-child { aspect-ratio: 3 / 2; }
+.gallery .shot:last-child { aspect-ratio: 3 / 4; }
+@media (min-width: 48rem) {
+  .gallery { grid-template-columns: 1.4fr 1fr; gap: 1.25rem; }
+  .gallery .shot { aspect-ratio: auto; height: 30rem; }
+}
+
+/* ---- reviews ------------------------------------------------------------- */
+
+.reviews {
+  display: grid;
+  gap: 1px;
+  background: var(--border);
+  margin-top: 3rem;
+}
+.review {
+  display: flex;
+  flex-direction: column;
+  background: var(--background);
+  padding: 2rem 1.75rem;
+}
+.stars { color: var(--gold); font-size: .9rem; letter-spacing: .14em; }
+.review p { margin-top: 1rem; font-size: 1.0625rem; line-height: 1.62; }
+.review-who {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  font-size: .75rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+.reviews-cta { margin-top: 2.5rem; }
+.fineprint { margin-top: 1.25rem; font-size: .75rem; }
+
+@media (min-width: 48rem) { .reviews { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* a tinted band sits on --secondary, so the cards on it take the paper tone */
+.band .reviews { background: color-mix(in oklab, var(--border) 70%, transparent); }
+.band .review { background: var(--background); }
