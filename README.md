@@ -70,7 +70,7 @@ because `--p` is only ever a statement about where you are on the page.
 **The hero pins.** `.hero-stage` is 150svh tall and `.hero` inside it is
 sticky, so the hero holds still while `.stack` — everything below it —
 scrolls up over it on its own plane, with a rounded top edge and a shadow.
-Across that travel the photograph settles out of its own zoom (1.18 → 1),
+Across that travel the mark settles out of its own zoom (1.18 → 1),
 the veil over it deepens, and the words rise and fade, clear by 80% of the
 way through, just as the sheet arrives.
 
@@ -279,6 +279,15 @@ Swap `url` and `key` in `config.js` to move the site onto a different database.
 - The Greek spelling of the doctors' names
 - `<meta name="robots" content="noindex, nofollow">` is on every page —
   remove it when the site goes live for real
+- **A real photograph for the hero.** There is none on the page now. The one
+  that was there, `hero.jpg`, turned out to be the full-size original of
+  `surgery.webp` — the shot the practice looked at on 05.11.2026 and said
+  "Ова се други. Не сме ние." It was removed from the gallery that day and
+  stayed on as the hero, where it was the first thing anyone saw. In its place
+  the hero carries their own mark as a watermark (`.hero-mark`, the same
+  `logo.svg` the header masks, at 12%), which is also what they asked for on
+  11.11.2026. The moment they send a photograph of their own rooms it drops
+  straight back in: put it back as `.hero-img` and move the `--p` zoom onto it.
 - **Which photographs are actually theirs.** On 05.11.2026 the practice looked
   at the gallery section and said of the two pictures in it — a procedure, and
   a reception — "these are other people, it is not us". Both are gone, from

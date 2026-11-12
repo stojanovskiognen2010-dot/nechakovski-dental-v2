@@ -259,13 +259,29 @@ p { text-wrap: pretty; }
   background: var(--ink);
   color: var(--ink-foreground);
 }
-.hero-img {
+/* Their own mark, sunk into the background of the hero — the practice asked
+   for "запчето од логото како сенка на позадината". It is also what the hero
+   has in place of a photograph: the one that used to be here was the shot they
+   said was not them. Masked, like .brand-mark, so one cached logo.svg serves
+   both and follows currentColor. */
+.hero-mark {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: .4;
+  top: 50%;
+  right: 5%;
+  translate: 0 -50%;
+  /* 72, not 84: it starts the scroll zoomed to 1.18, and 84 clipped the crown */
+  height: 72%;
+  aspect-ratio: 306 / 635;      /* the artwork */
+  background: currentColor;
+  color: var(--gold);
+  opacity: .12;
+  -webkit-mask: url(logo.svg) center / contain no-repeat;
+  mask: url(logo.svg) center / contain no-repeat;
+}
+/* Narrow, the hero is content-tall rather than screen-tall, so 84% of it makes
+   a mark wider than the phone. Size it off the width here. */
+@media (max-width: 40rem) {
+  .hero-mark { height: auto; width: 54%; right: -6%; }
 }
 .hero-veil {
   position: absolute;
@@ -835,8 +851,9 @@ body { -webkit-tap-highlight-color: color-mix(in oklab, var(--gold) 20%, transpa
 }
 .pin-hero .hero-inner { padding-block: 0; }
 
-/* the photograph settles back out of its own zoom as you scroll */
-.hero-img {
+/* the mark settles back out of its own zoom as you scroll, the way the
+   photograph used to */
+.hero-mark {
   transform: scale(calc(1.18 - var(--p, 1) * .18));
   transform-origin: 50% 45%;
   will-change: transform;
@@ -887,7 +904,7 @@ body { -webkit-tap-highlight-color: color-mix(in oklab, var(--gold) 20%, transpa
 @media (prefers-reduced-motion: reduce) {
   .hero-stage { height: auto !important; }
   .hero { position: static !important; height: auto !important; }
-  .hero-img { transform: none !important; }
+  .hero-mark { transform: none !important; }
   .hero-veil { opacity: 1 !important; }
   .hero-inner { transform: none !important; opacity: 1 !important; }
   .frame img { transform: none !important; }
