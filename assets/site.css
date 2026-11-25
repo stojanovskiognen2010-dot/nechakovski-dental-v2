@@ -836,7 +836,7 @@ body { -webkit-tap-highlight-color: color-mix(in oklab, var(--gold) 20%, transpa
    somewhere to travel — the same rule that bit the header. feed.js adds
    .pin-hero only when the hero's content actually fits the screen, so a
    short phone never pins and never clips. */
-.pin-hero .hero-stage { height: 150svh; }
+.pin-hero .hero-stage { height: 136svh; }
 /* It sticks *under* the header rather than at 0, and is short by exactly
    that much, so the frame it occupies is identical before and after it
    pins. Sticking at 0 left it hanging 65px below the fold at rest, which
@@ -860,10 +860,15 @@ body { -webkit-tap-highlight-color: color-mix(in oklab, var(--gold) 20%, transpa
 }
 /* and darkens under the text that is leaving */
 .hero-veil { opacity: calc(.72 + var(--p, 0) * .28); }
-/* the words rise away rather than scrolling off */
+/* The words rise away rather than scrolling off. They only *dim* — what
+   takes them off the screen is the sheet sliding over them.
+   They used to reach opacity 0 at p = .8 while the sheet below did not start
+   covering until p = 1, so roughly a third of a screen of scrolling showed an
+   empty navy hero with nothing on it but the watermark. The practice called it
+   “во момент станува празна страна”, and they were right. */
 .hero-inner {
-  transform: translate3d(0, calc(var(--p, 0) * -6rem), 0);
-  opacity: calc(1 - var(--p, 0) * 1.25);
+  transform: translate3d(0, calc(var(--p, 0) * -4.5rem), 0);
+  opacity: calc(1 - var(--p, 0) * .55);
 }
 
 /* ---- the sheet that rides over it --------------------------------------- */
@@ -878,7 +883,11 @@ body { -webkit-tap-highlight-color: color-mix(in oklab, var(--gold) 20%, transpa
 }
 /* with no pin there is no overlap to speak of, so make one */
 .stack { margin-top: -1.75rem; }
-.pin-hero .stack { margin-top: 0; }
+/* The sheet starts riding over the hero while it is still pinned — which is
+   the point of pinning it, and was in the treatment the practice picked:
+   “next section slides over, hero pinned while this happens”. At margin-top 0
+   it waited for the pin to finish, which is what opened the gap above. */
+.pin-hero .stack { margin-top: -18svh; }
 
 /* ---- photographs that travel inside their frame ------------------------- */
 
